@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import './App.css';
 
-const shortHeader = <h2>My Short Message</h2>;
-const longHeader = <h1>My Long Message</h1>;
-
 class App extends Component {
   
   constructor(props) {
     super(props);
     
     this.state = {
-      message: 'Hello World',
-      color: '#4682b4'
+      message: props.initialMessage,
+      color: '#3168FF',
+      background: '#e6ffee',
+      fontSize: 20,
+      fontWeight: 'normal',
+      fontStyle: 'normal',
+      fontFamily: 'Helvetica, Arial, sans-serif'
     }
   }
 
@@ -21,43 +23,61 @@ class App extends Component {
     });
   }
 
-  // changeBg(imgNum) {
-  //   imgNum++;
-  //   console.log(imgNum);
-  //   if(imgNum > 4) imgNum = 1;
-  //   this.setState({
-  //     divStyle: {
-  //       backgroundImage: 'url(images/bg-0' + imgNum + '.jpg)'
-  //     }
-  //   })
-  // }
-
   render() {
-    
-    const header = this.state.message.length < 20 ? shortHeader : longHeader;
-    var imgNum = 1;
-    var divStyle = {
-      backgroundImage: 'url(images/bg-0' + imgNum + '.jpg)'
-    }
 
+    const fonts = {
+      sansSerif: 'Helvetica, Arial, sans-serif',
+      serif: 'Georgia, Times, serif',
+      monospace: 'Courier, monospace'
+    };
+    
     return (
-      <div id="full-bg" style={divStyle}>
-        {header}
+      <div id="wrap">
         <div id="inputs">
+          <h1>Anwar's WYSIWYG Editor</h1>
           <label>
-            Message: <input name="message" value={this.state.message} onChange={({ target}) => this.handleChange(target)} />
+            Message: <input id="inputMsg" name="message" value={this.state.message} onChange={({ target}) => this.handleChange(target)} />
           </label>
           <label>
             Color: <input name="color" value={this.state.color} type="color" onChange={({target}) => this.handleChange(target)} />
           </label>
+          <label>
+            Background: <input name="background" value={this.state.background} type="color" onChange={({target}) => this.handleChange(target)} />
+          </label>
+          <label>
+            Font Size: <input name="fontSize" value={this.state.fontSize} type="range" min="8" max="64" step="4" onChange={({ target }) => this.handleChange(target)}/>
+          </label>
+          <label>
+          <input type="checkbox"
+            name="fontWeight"
+            value={this.state.fontWeight === "bold" ? "normal" : "bold"}
+            onChange={({target}) => this.handleChange(target)}/>
+            &nbsp;Bold
+          </label>
+          <label>
+          <input type="checkbox"
+            name="fontStyle"
+            value={this.state.fontStyle === "italic" ? "normal" : "italic"}
+            onChange={({target}) => this.handleChange(target)}/>
+            &nbsp;Italic
+          </label>
+          <label>Typeface:&nbsp;
+            <select name="fontFamily" value={this.state.fontFamily} onChange={({ target }) => this.handleChange(target)}>
+              <option value={fonts.sansSerif}>{fonts.sansSerif}</option>
+              <option value={fonts.serif}>{fonts.serif}</option>
+              <option value={fonts.monospace}>{fonts.monospace}</option>
+            </select>
+          </label>
         </div>
         <div className="display" style={{
-          color: this.state.color
+          color: this.state.color,
+          background: this.state.background,
+          fontSize: this.state.fontSize,
+          fontWeight: this.state.fontWeight,
+          fontStyle: this.state.fontStyle,
+          fontFamily: this.state.fontFamily
         }}>
           {this.state.message}
-        </div>
-        <div>
-          <button onClick={this.changeBg(imgNum)}>Change background</button>
         </div>
       </div>
     );
